@@ -2,10 +2,10 @@
     final class Dashboard
     {
         // fields
-        private $dataInicio;
-        private $dataFim;
-        private $numeroVendas;
-        private $totalVendas;
+        public $dataInicio;
+        public $dataFim;
+        public $numeroVendas;
+        public $totalVendas;
 
         // constructor
         public function __construct()
@@ -128,15 +128,21 @@
 ?>
 
 <?php
+    $competencia = explode('-', $_GET['competencia']);
+    $year = $competencia[0];
+    $month = $competencia[1];
+    $last_day = cal_days_in_month(CAL_GREGORIAN, (int) $month, (int) $year);
+
+    $data_inicio = $year . '-' . $month . '-01';
+    $data_fim = $year . '-' . $month . '-' . $last_day;
+
     $dashboard = new Dashboard();
-    $dashboard->DataInicio('2018-10-01');
-    $dashboard->DataFim('2018-10-31');
+    $dashboard->DataInicio($data_inicio);
+    $dashboard->DataFim($data_fim);
 
     $bd = new BD(new Conn(), $dashboard);
-
-    echo '<pre>';
-    print_r($bd->NumeroVendas());
-    print_r($bd->TotalVendas());
-    print_r($bd->Dashboard());
-    echo '</pre>';
+    $bd->NumeroVendas();
+    $bd->TotalVendas();
+    
+    echo json_encode($dashboard);
 ?>
