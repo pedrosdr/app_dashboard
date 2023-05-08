@@ -13,5 +13,19 @@ $(document).ready(() => {
             $('#pagina').html(responseText)
         })
     })
+
+    $("#competencia").on('change', e => {
+        $.ajax({
+            type: 'GET',
+            url: 'app.php',
+            data: 'competencia=' + $(e.target).val(),
+            dataType: 'json',
+            success: dados => {
+                $('#numero-vendas').html(dados.numeroVendas)
+                $('#total-vendas').html(dados.totalVendas)
+            },
+            error: erro => console.log('requisição mal sucedida: ' + erro)
+        })
+    })
 })
 
